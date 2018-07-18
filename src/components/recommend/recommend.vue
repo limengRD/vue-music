@@ -1,13 +1,13 @@
 <template>
   <div class="recommend">
-    <scroll class="recommend-content" :data="list">
+    <scroll class="recommend-content" :data="list" ref="scroll">
       <div>
         <!-- 轮播图 -->
         <div class="slider-wrapper">
           <mt-swipe :auto="4000">
             <mt-swipe-item v-for="(item,index) in recommends" :key="index" >
               <a :href="item.linkUrl">
-                <img class="my-swipeimg" :src="item.picUrl" alt="">
+                <img @load="loadImg" class="my-swipeimg" :src="item.picUrl" alt="">
               </a>
             </mt-swipe-item>
           </mt-swipe>
@@ -18,7 +18,7 @@
           <ul>
             <li class="item" v-for="(item,index) in list" :key="index">
               <div class="icon">
-                <img :src="item.imgurl" width="60" height="60" alt="">
+                <img v-lazy="item.imgurl" width="60" height="60" alt="">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -28,6 +28,9 @@
           </ul>
         </div>
       </div>
+      <div class="loading"  v-show="!list.length">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -36,6 +39,7 @@
 import {getRecommend,getDiscList} from '@/api/recommend'
 import {ERR_OK} from '@/api/config'
 import Scroll from '@/base/scroll/scroll'
+import Loading from '@/base/loading/loading'
 
 export default {
   data(){
@@ -45,7 +49,8 @@ export default {
     }
   },
   components:{
-    Scroll
+    Scroll,
+    Loading
   },
   created() {
     this._getRecommend(),
@@ -66,6 +71,11 @@ export default {
           this.list = res.data.list
         }
       })
+    },
+    loadImg() {
+      if(!this.checkLoading)
+      this.$refs.scroll.refresh()
+      this.checkLoading = true
     }
   }
 }
@@ -75,6 +85,13 @@ export default {
  @import "~@/common/stylus/variable"
 
   .recommend
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
+    z-index: -1
+    .recommend-content
+      height: 100%
     .slider-wrapper
       .mint-swipe
         height: 150px
@@ -108,5 +125,10 @@ export default {
             color: $color-text
           .desc
             color: $color-text-d
+    .loading
+      width: 100%
+      position: absolute 
+      top: 50%
+      transfrom: translateY(-50%)
 
 </style>

@@ -8,12 +8,16 @@ import fastclick from 'fastclick'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import '@/common/stylus/index.styl'
+import Vuelazyload from 'vue-lazyload'
 
 //绑定在body 所有的标签都没有300毫秒的延迟
 fastclick.attach(document.body)
 
 Vue.config.productionTip = false
 Vue.use(MintUI)
+Vue.use(Vuelazyload,{
+  loading: require('./common/image/default.png')
+})
 
 /* eslint-disable no-new */
 new Vue({
