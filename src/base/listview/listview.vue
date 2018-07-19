@@ -1,19 +1,19 @@
 <template>
-  <scroll class="listview" :data="data">
+  <scroll class="listview" :data="data" ref="listview">
     <ul >
-      <li v-for="(group,index) in data" :key="index" class="list-group">
+      <li v-for="(group,index) in data" :key="index" class="list-group" ref="listgroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="(item,index) in group.items" :key="index" class="list-group-item">
+          <li v-for="(item,index) in group.items" :key="index" class="list-group-item" >
             <img class="avatar" :src="item.avatar" alt="">
             <span class="name">{{item.name}}</span>
           </li>
         </ul>
       </li>
     </ul>
-    <div class="list-shortcut">
+    <div class="list-shortcut" @touchmove.stop.prevent="onShortcutTuchMove">
       <ul>
-        <li v-for="(item,index) in shortcutList">{{item}}</li>
+        <li @touchstart="onShortcutTouchStart" v-for="(item,index) in shortcutList" :data-index="index" class="item">{{item}}</li>
       </ul>
     </div>
   </scroll>
@@ -21,6 +21,7 @@
 
 <script>
 import Scroll from '@/base/scroll/scroll'
+import {getData} from '@/common/js/dom.js'
 export default {
   props:{
     data: {
@@ -29,12 +30,30 @@ export default {
     }
   },
   created (){
+    this.touch = {}
   },
   computed:{
     shortcutList() {
       return this.data.map((group) => {
         return group.title.substr(0,1)
       })
+    }
+  },
+  methods: {
+    onShortcutTouchStart(e){
+      let index = getData(e.target,'index')
+      let firstTouch = e.touches[0]
+      this.touch.y1 = firstTouch.pageY
+      this.touch.anchorIndex = index
+      this.$refs.listview.scrollToElement(this.$refs.listgroup[index],0)
+    },
+    onShortcutTuchMove(e) {
+      let firstTouch = e.touches[0]
+      this.touch.y2 = firstTouch.pageY
+      let delta = (this.touch.y2 - this.touch.y1) / 19
+      let index = delta + parseInt(this.touch.anchorIndex)
+      console.log(index)
+      this.$refs.listview.scrollToElement(this.$refs.listgroup[index],0)
     }
   },
   components: {
@@ -70,4 +89,20 @@ export default {
         margin-left: 20px
         font-size: $font-size-medium
         color: $color-text-l
+    .list-shortcut
+      position: absolute
+      z-index: 30
+      right: 0
+      top: 50%
+      transform: translateY(-50%)
+      width: 20px
+      padding: 20px 0
+      border-radius: 10px
+      text-align: center
+      background: $color-background-d
+      font-family: Helvetica
+      .item
+        color: $color-text-l
+        font-size: $font-size-small
+        margin-top: 10px
 </style>
