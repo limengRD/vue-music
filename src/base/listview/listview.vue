@@ -13,7 +13,7 @@
     </ul>
     <div class="list-shortcut">
       <ul>
-        <li v-for="(item,index) in " class="item">{{item}}</li>
+        <li v-for="(item,index) in shortcutList">{{item}}</li>
       </ul>
     </div>
   </scroll>
