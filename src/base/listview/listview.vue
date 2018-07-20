@@ -4,7 +4,7 @@
       <li v-for="(group,index) in data" :key="index" class="list-group" ref="listgroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="(item,index) in group.items" :key="index" class="list-group-item" >
+          <li v-for="(item,index) in group.items" :key="index" class="list-group-item" @click="selectItem(item)" >
             <img class="avatar" :src="item.avatar" alt="">
             <span class="name">{{item.name}}</span>
           </li>
@@ -50,10 +50,13 @@ export default {
     onShortcutTuchMove(e) {
       let firstTouch = e.touches[0]
       this.touch.y2 = firstTouch.pageY
-      let delta = (this.touch.y2 - this.touch.y1) / 19
+      let delta = (this.touch.y2 - this.touch.y1) / 22
       let index = delta + parseInt(this.touch.anchorIndex)
-      console.log(index)
+      index = Math.floor(index)
       this.$refs.listview.scrollToElement(this.$refs.listgroup[index],0)
+    },
+    selectItem(item) {
+      this.$emit('select',item)
     }
   },
   components: {
@@ -91,7 +94,6 @@ export default {
         color: $color-text-l
     .list-shortcut
       position: absolute
-      z-index: 30
       right: 0
       top: 50%
       transform: translateY(-50%)

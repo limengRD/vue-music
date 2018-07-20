@@ -89,7 +89,6 @@ export default {
     width: 100%
     top: 88px
     bottom: 0
-    z-index: -1
     .recommend-content
       height: 100%
     .slider-wrapper

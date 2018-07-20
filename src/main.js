@@ -4,6 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import fastclick from 'fastclick'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -22,6 +23,7 @@ Vue.use(Vuelazyload,{
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   render: h => h(App)
 })

@@ -18,9 +18,11 @@ export default {
   .m-header
     position: relative
     height: 44px
+    z-index: 10
     text-align: center
     color: @color-theme
     font-size: 0
+    background-color: $color-background
     .icon
       display: inline-block
       vertical-align: top

@@ -1,6 +1,7 @@
 <template>
-    <div class="singer">
-        <list-view :data="list" v-if="list.length "></list-view>
+    <div class="singer" ref="singer">
+        <list-view @select="selectSinger" :data="list" v-if="list.length "></list-view>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -9,6 +10,8 @@ import {getSingerList} from '@/api/singer.js'
 import {ERR_OK} from '@/api/config.js'
 import Singer from '@/common/js/singer.js'
 import ListView from '@/base/listview/listview'
+import {mapMutations} from 'vuex'
+
 const HOT_NAME = '热门'
 const HOT_SINGER_LEN = 10
     export default {
@@ -25,6 +28,9 @@ const HOT_SINGER_LEN = 10
             ListView
         },
         methods:{
+            ...mapMutations({
+                setSinger:'SET_SINGER'
+            }),
             _getSingerList() {
                 getSingerList().then((res) => {
                     if(res.code === ERR_OK) {
@@ -72,7 +78,13 @@ const HOT_SINGER_LEN = 10
                     return a.title.charCodeAt() - b.title.charCodeAt()
                 })
                 return hot.concat(ret)
+            },
+            selectSinger(item) {
+                this.$refs.singer.style = 'z-index: 50'
+                this.setSinger(item)
+                this.$router.push({path:`/singer/${item.id}`})
             }
+
         }
     }    
 </script>
@@ -84,7 +96,6 @@ const HOT_SINGER_LEN = 10
         top: 88px
         bottom: 0
         width: 100%
-        z-index: -1
         .fixed-title
             height: 30px
             line-height 30px
