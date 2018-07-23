@@ -1,7 +1,7 @@
 <template>
     <div class="singer" ref="singer">
         <list-view @select="selectSinger" :data="list" v-if="list.length "></list-view>
-        <router-view></router-view>
+        <router-view @ZIndex="changerZIndex"></router-view>
     </div>
 </template>
 
@@ -23,6 +23,7 @@ const HOT_SINGER_LEN = 10
         },
         created() {
             this._getSingerList()
+            
         },
         components: {
             ListView
@@ -80,9 +81,12 @@ const HOT_SINGER_LEN = 10
                 return hot.concat(ret)
             },
             selectSinger(item) {
-                this.$refs.singer.style = 'z-index: 50'
                 this.setSinger(item)
                 this.$router.push({path:`/singer/${item.id}`})
+            },
+            changerZIndex(){
+                alert(123123)
+                this.$refs.singer.style = 'z-index: 0'
             }
 
         }
