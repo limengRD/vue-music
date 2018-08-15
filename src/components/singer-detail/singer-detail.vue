@@ -40,11 +40,9 @@ export default {
         this.$router.push('/singer')
       }
       getSingerDetail(this.singer.id).then((res) =>{
-        console.log(res)
         let ret = []
         if(res.code === ERR_OK) {
           this.songs = this._normalizeSongs(res.data.list)
-          console.log(this.songs)
         }
       })
     },

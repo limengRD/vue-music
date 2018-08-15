@@ -23,7 +23,6 @@ const HOT_SINGER_LEN = 10
         },
         created() {
             this._getSingerList()
-            
         },
         components: {
             ListView
@@ -81,11 +80,11 @@ const HOT_SINGER_LEN = 10
                 return hot.concat(ret)
             },
             selectSinger(item) {
+                this.$refs.singer.style.zIndex = 50
                 this.setSinger(item)
                 this.$router.push({path:`/singer/${item.id}`})
             },
             changerZIndex(){
-                alert(123123)
                 this.$refs.singer.style = 'z-index: 0'
             }
 
