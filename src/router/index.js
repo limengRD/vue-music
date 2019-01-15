@@ -6,6 +6,7 @@ import rank from '@/components/rank/rank'
 import search from '@/components/search/search'
 import singer from '@/components/singer/singer'
 import SingerDetail from '@/components/singer-detail/singer-detail'
+import player from '@/components/player/player'
 
 
 Vue.use(Router)
@@ -17,7 +18,7 @@ export default new Router({
       redirect:'/recommend'
     },
     {
-      path:'/recommend', 
+      path:'/recommend',
       component: recommend
     },
     {
@@ -37,6 +38,10 @@ export default new Router({
           component: SingerDetail
         }
       ]
+    },
+    {
+      path: '/player',
+      component: player
     }
   ]
 })
