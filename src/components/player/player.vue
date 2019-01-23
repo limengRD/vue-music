@@ -30,7 +30,6 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="mini-player" v-show="!fullScreen"></div>
   </div>
